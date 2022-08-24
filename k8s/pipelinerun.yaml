@@ -1,0 +1,22 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  generateName: buildah-multiarch-
+spec:
+  serviceAccountName: tekton-robot
+  pipelineRef:
+    name: buildah-multiarch
+  params:
+  - name: gitRepositoryURL
+    value: https://github.com/nmasse-itix/buildah-multiarchitecture-build.git
+  - name: outputContainerImage
+    value: quay.io/nmasse_itix/samba
+  workspaces:
+  - name: scratch
+    volumeClaimTemplate:
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 1Gi
